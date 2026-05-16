@@ -1,0 +1,15 @@
+D:\Наработки\TaskManager\TaskManager\bin\Debug\net9.0\TaskManager.exe
+D:\Наработки\TaskManager\TaskManager\bin\Debug\net9.0\TaskManager.deps.json
+D:\Наработки\TaskManager\TaskManager\bin\Debug\net9.0\TaskManager.runtimeconfig.json
+D:\Наработки\TaskManager\TaskManager\bin\Debug\net9.0\TaskManager.dll
+D:\Наработки\TaskManager\TaskManager\bin\Debug\net9.0\TaskManager.pdb
+D:\Наработки\TaskManager\TaskManager\obj\Debug\net9.0\TaskManager.GeneratedMSBuildEditorConfig.editorconfig
+D:\Наработки\TaskManager\TaskManager\obj\Debug\net9.0\TaskManager.AssemblyInfoInputs.cache
+D:\Наработки\TaskManager\TaskManager\obj\Debug\net9.0\TaskManager.AssemblyInfo.cs
+D:\Наработки\TaskManager\TaskManager\obj\Debug\net9.0\TaskManager.csproj.CoreCompileInputs.cache
+D:\Наработки\TaskManager\TaskManager\obj\Debug\net9.0\TaskManager.sourcelink.json
+D:\Наработки\TaskManager\TaskManager\obj\Debug\net9.0\TaskManager.dll
+D:\Наработки\TaskManager\TaskManager\obj\Debug\net9.0\refint\TaskManager.dll
+D:\Наработки\TaskManager\TaskManager\obj\Debug\net9.0\TaskManager.pdb
+D:\Наработки\TaskManager\TaskManager\obj\Debug\net9.0\TaskManager.genruntimeconfig.cache
+D:\Наработки\TaskManager\TaskManager\obj\Debug\net9.0\ref\TaskManager.dll
