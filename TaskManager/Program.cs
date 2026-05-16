@@ -47,14 +47,13 @@ class Program
         targetTime[(int)calendar.hour] = now.Hour;
         targetTime[(int)calendar.minute] = now.Minute;
         byte focus = 0;
-        bool process = true;
-        while (process)
+        while (true)
         {
             Console.Clear();
-            Console.WriteLine($"{targetTime[0]}|{targetTime[1]}|{targetTime[2]}|{targetTime[3]}:{targetTime[4]}"); 
+            Console.WriteLine($"{targetTime[0]}|{targetTime[1]}|{targetTime[2]}|{targetTime[3]}:{targetTime[4]}");
             PrintCursor(targetTime, focus);
             ConsoleKey ch = Console.ReadKey().Key;
-            
+
             switch (ch)
             {
                 case ConsoleKey.UpArrow:
@@ -64,18 +63,36 @@ class Program
                     targetTime[focus] -= 1;
                     break;
                 case ConsoleKey.LeftArrow:
-                    if (focus > 0){focus -= 1;}
+                    if (focus > 0)
+                    {
+                        focus -= 1;
+                    }
+
                     break;
                 case ConsoleKey.RightArrow:
-                    if (focus < 4){focus += 1;}
+                    if (focus < 4)
+                    {
+                        focus += 1;
+                    }
+
                     break;
                 case ConsoleKey.Tab:
-                    process = false;
-                    break;
+                    try
+                    {
+                        DateTime target = new DateTime(targetTime[0], targetTime[1], targetTime[2], targetTime[3],
+                            targetTime[4], 0);
+                        Console.Clear();
+                        return target;
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        Console.WriteLine("Неверный формат даты, попробуйте ещё раз");
+                        Console.ReadLine();
+                        break;
+                    }
+
             }
         }
-        DateTime target =  new DateTime(targetTime[0], targetTime[1], targetTime[2], targetTime[3], targetTime[4], 0);
-        return target;
     }
 
     private static void PrintCursor(int[] targetTime, byte focus)
