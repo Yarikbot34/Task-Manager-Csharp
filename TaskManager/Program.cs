@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.InteropServices.ComTypes;
+
 namespace TaskManager;
 
 
@@ -6,6 +8,7 @@ class Program
 {
     static void Main(string[] args)
     {
+        Target.LoadFromFile();
         while (true)
         {
             foreach (Target t in Target.targets)
@@ -13,9 +16,14 @@ class Program
                 Console.WriteLine(t.ToString());
             }
             string ch = Console.ReadLine();
-            if (ch == "q"){break;}
+            if (ch == "q")
+            {
+                Target.SaveToFile();
+                break;
+            }
             if (ch == "add"){addTarget();}
             if (ch == "time"){setTime();}
+            
         }
     }
 
@@ -27,29 +35,23 @@ class Program
         string description = Console.ReadLine();
         Target target = new Target(name, description,  DateTime.Now.AddDays(5));
     }
-
-    enum calendar
-    {
-        year,
-        month,
-        day,
-        hour,
-        minute,
-    }
+    
 
     static DateTime setTime()
     {
+        
         DateTime now = DateTime.Now;
         int[] targetTime = new int[5];
-        targetTime[(int)calendar.year] = now.Year;
-        targetTime[(int)calendar.month] = now.Month;
-        targetTime[(int)calendar.day] = now.Day;
-        targetTime[(int)calendar.hour] = now.Hour;
-        targetTime[(int)calendar.minute] = now.Minute;
+        targetTime[0] = now.Year;
+        targetTime[1] = now.Month;
+        targetTime[2] = now.Day;
+        targetTime[3] = now.Hour;
+        targetTime[4] = now.Minute;
         byte focus = 0;
         while (true)
         {
             Console.Clear();
+            Console.WriteLine("Установите срок задачи | Нажмите Enter для подтверждения");
             Console.WriteLine($"{targetTime[0]}|{targetTime[1]}|{targetTime[2]}|{targetTime[3]}:{targetTime[4]}");
             PrintCursor(targetTime, focus);
             ConsoleKey ch = Console.ReadKey().Key;
@@ -57,10 +59,10 @@ class Program
             switch (ch)
             {
                 case ConsoleKey.UpArrow:
-                    targetTime[focus] += 1;
+                    targetTime[focus] = calcBorder(targetTime[focus] + 1, focus);
                     break;
                 case ConsoleKey.DownArrow:
-                    targetTime[focus] -= 1;
+                    targetTime[focus] = calcBorder(targetTime[focus] - 1, focus);
                     break;
                 case ConsoleKey.LeftArrow:
                     if (focus > 0)
@@ -76,7 +78,7 @@ class Program
                     }
 
                     break;
-                case ConsoleKey.Tab:
+                case ConsoleKey.Enter:
                     try
                     {
                         DateTime target = new DateTime(targetTime[0], targetTime[1], targetTime[2], targetTime[3],
@@ -93,6 +95,33 @@ class Program
 
             }
         }
+    }
+
+    private static int calcBorder(int x, byte index)
+    {
+        switch (index)
+        {
+            case 0:
+                x = x%DateTime.MaxValue.Year;
+                break;
+            case 1:
+                x = x%12;
+                break;
+            case 2:
+                x = x%(DateTime.MaxValue.Day);
+                break;
+            case 3:
+                x = x%(DateTime.MaxValue.Hour+1);
+                break;
+            case 4:
+                x = x%(DateTime.MaxValue.Minute+1);
+                break;
+            default:
+                x = x;
+                break;
+        }
+        x = Math.Abs(x);
+        return x;
     }
 
     private static void PrintCursor(int[] targetTime, byte focus)
