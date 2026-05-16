@@ -52,6 +52,7 @@ class Program
         {
             Console.Clear();
             Console.WriteLine($"{targetTime[0]}|{targetTime[1]}|{targetTime[2]}|{targetTime[3]}:{targetTime[4]}"); 
+            PrintCursor(targetTime, focus);
             ConsoleKey ch = Console.ReadKey().Key;
             
             switch (ch)
@@ -68,7 +69,7 @@ class Program
                 case ConsoleKey.RightArrow:
                     if (focus < 4){focus += 1;}
                     break;
-                case ConsoleKey.Escape:
+                case ConsoleKey.Tab:
                     process = false;
                     break;
             }
@@ -77,5 +78,14 @@ class Program
         return target;
     }
 
-
+    private static void PrintCursor(int[] targetTime, byte focus)
+    {
+        string cursor = "";
+        for (byte i = 0; i < focus; i++)
+        {
+            cursor += new string(' ', targetTime[i].ToString().Length + 1);
+        }
+        cursor += new string('#' , targetTime[focus].ToString().Length);
+        Console.WriteLine(cursor);
+    }
 }
