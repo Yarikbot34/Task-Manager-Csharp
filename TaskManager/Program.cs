@@ -33,6 +33,10 @@ class Program
                 focusTarget++;
                 Target.targets[focusTarget].inFocus = true;
             }
+            else if (ch == ConsoleKey.N)
+            {
+                addTarget();
+            }
             
 
         }
@@ -45,7 +49,6 @@ class Program
         Console.Write("Описание цели: ");
         string description = Console.ReadLine();
         DateTime end = setTime();
-        if (end > DateTime.Now){end = DateTime.Now;}
         Target target = new Target(name, description,  end);
     }
     
@@ -96,6 +99,11 @@ class Program
                     {
                         DateTime target = new DateTime(targetTime[0], targetTime[1], targetTime[2], targetTime[3],
                             targetTime[4], 0);
+                        if (target < DateTime.Now)
+                        {
+                            Console.WriteLine("Дата окончания не может быть раньше даты создания.");
+                            break;
+                        }
                         Console.Clear();
                         return target;
                     }
