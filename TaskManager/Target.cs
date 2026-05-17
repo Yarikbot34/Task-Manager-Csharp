@@ -9,6 +9,7 @@ public class Target
     private string description { get; set; }
     private DateTime createDate { get; set; }
     private DateTime endDate { get; set; }
+    public bool inFocus = false;
 
     public Target(string name, string description, DateTime endDate)
     {
@@ -26,14 +27,18 @@ public class Target
         this.name = name;
         this.description = description;
         this.endDate = endDate;
-        createDate = DateTime.Now;
+        this.createDate = createDate;
         targets.Add(this);
     }
     
 
     override public string ToString()
     {
-        return $"{id} \t| {name} | {endDate} \n \t| {description}\n";
+        if (inFocus)
+        {
+            return $"▓ {id} \t| {name} | {endDate} \n▓ \t| {description}\n";
+        }
+        return $"░ {id} \t| {name} | {endDate} \n░ \t| {description}\n";
     }
 
     private static string FormatData()

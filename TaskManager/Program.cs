@@ -9,21 +9,32 @@ class Program
     static void Main(string[] args)
     {
         Target.LoadFromFile();
+        Console.ReadKey(true);
+        int focusTarget = 0;
+        Target.targets[focusTarget].inFocus = true;
         while (true)
         {
+            Console.Clear();
+            Console.WriteLine("Текущие задачи. Для навигации используйте стрелки вверх и вниз\nРедактировать заметку R; Новая заметка N; Удалить заметку D;\n");
             foreach (Target t in Target.targets)
             {
                 Console.WriteLine(t.ToString());
             }
-            string ch = Console.ReadLine();
-            if (ch == "q")
+            ConsoleKey ch = Console.ReadKey().Key;
+            if (ch == ConsoleKey.UpArrow && focusTarget > 0)
             {
-                Target.SaveToFile();
-                break;
+                Target.targets[focusTarget].inFocus = false;
+                focusTarget--;
+                Target.targets[focusTarget].inFocus = true;
             }
-            if (ch == "add"){addTarget();}
-            if (ch == "time"){setTime();}
+            else if (ch == ConsoleKey.DownArrow && focusTarget < Target.targets.Count - 1)
+            {
+                Target.targets[focusTarget].inFocus = false;
+                focusTarget++;
+                Target.targets[focusTarget].inFocus = true;
+            }
             
+
         }
     }
 
@@ -33,7 +44,9 @@ class Program
         string name = Console.ReadLine();
         Console.Write("Описание цели: ");
         string description = Console.ReadLine();
-        Target target = new Target(name, description,  DateTime.Now.AddDays(5));
+        DateTime end = setTime();
+        if (end > DateTime.Now){end = DateTime.Now;}
+        Target target = new Target(name, description,  end);
     }
     
 
