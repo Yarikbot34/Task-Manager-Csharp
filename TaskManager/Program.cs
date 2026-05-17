@@ -13,20 +13,29 @@ class Program
         Target.targets[focusTarget].inFocus = true;
         while (true)
         {
+            bool targetsNotNull = Target.targets.Count > 0;
             Console.Clear();
             Console.WriteLine("Текущие задачи. Для навигации используйте стрелки вверх и вниз\nРедактировать заметку R; Новая заметка N; Удалить заметку D;\n Выйти Q");
-            foreach (Target t in Target.targets)
+            if (targetsNotNull)
             {
-                Console.WriteLine(t.ToString());
+                foreach (Target t in Target.targets)
+                {
+                    Console.WriteLine(t.ToString());
+                }
             }
+            else
+            {
+                Console.WriteLine("Нет заметок для отображения");
+            }
+
             ConsoleKey ch = Console.ReadKey(true).Key;
-            if (ch == ConsoleKey.UpArrow && focusTarget > 0)
+            if (ch == ConsoleKey.UpArrow && focusTarget > 0 && targetsNotNull)
             {
                 Target.targets[focusTarget].inFocus = false;
                 focusTarget--;
                 Target.targets[focusTarget].inFocus = true;
             }
-            else if (ch == ConsoleKey.DownArrow && focusTarget < Target.targets.Count - 1)
+            else if (ch == ConsoleKey.DownArrow && focusTarget < Target.targets.Count - 1 && targetsNotNull)
             {
                 Target.targets[focusTarget].inFocus = false;
                 focusTarget++;
@@ -36,12 +45,15 @@ class Program
             {
                 addTarget();
             }
-            else if (ch == ConsoleKey.R)
+            else if (ch == ConsoleKey.D && targetsNotNull)
+            {
+                Target.targets.RemoveAt(focusTarget);
+                focusTarget--;
+            }
+            else if (ch == ConsoleKey.R && targetsNotNull)
             {
                 editTarget(focusTarget);
             }
-            
-
         }
     }
 
