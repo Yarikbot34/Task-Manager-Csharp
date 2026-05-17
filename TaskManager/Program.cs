@@ -9,18 +9,17 @@ class Program
     static void Main(string[] args)
     {
         Target.LoadFromFile();
-        Console.ReadKey(true);
         int focusTarget = 0;
         Target.targets[focusTarget].inFocus = true;
         while (true)
         {
             Console.Clear();
-            Console.WriteLine("Текущие задачи. Для навигации используйте стрелки вверх и вниз\nРедактировать заметку R; Новая заметка N; Удалить заметку D;\n");
+            Console.WriteLine("Текущие задачи. Для навигации используйте стрелки вверх и вниз\nРедактировать заметку R; Новая заметка N; Удалить заметку D;\n Выйти Q");
             foreach (Target t in Target.targets)
             {
                 Console.WriteLine(t.ToString());
             }
-            ConsoleKey ch = Console.ReadKey().Key;
+            ConsoleKey ch = Console.ReadKey(true).Key;
             if (ch == ConsoleKey.UpArrow && focusTarget > 0)
             {
                 Target.targets[focusTarget].inFocus = false;
@@ -37,6 +36,10 @@ class Program
             {
                 addTarget();
             }
+            else if (ch == ConsoleKey.R)
+            {
+                editTarget(focusTarget);
+            }
             
 
         }
@@ -51,8 +54,59 @@ class Program
         DateTime end = setTime();
         Target target = new Target(name, description,  end);
     }
-    
 
+
+    static void editTarget(int focus)
+    {
+        int editFocus = 0;
+        string[] options = new string[4]{"Изменить название","Изменить описание", "Изменить конечную дату", "Выход"};
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine(Target.targets[focus].ToString());
+            for (int i = 0; i < options.Length; i++)
+            {
+                if (editFocus == i)
+                {
+                    Console.WriteLine("▓" + options[i]);
+                }
+                else
+                {
+                    Console.WriteLine("░" + options[i]);
+                }
+            }
+            ConsoleKey editCh = Console.ReadKey(true).Key;
+            if (editCh == ConsoleKey.UpArrow && editFocus > 0)
+            {
+                editFocus--;
+            } else if (editCh == ConsoleKey.DownArrow && editFocus < 3)
+            {
+                editFocus++;
+            } else if (editCh == ConsoleKey.Enter)
+            {
+                switch (editFocus)
+                {
+                    case 0:
+                        Console.WriteLine("Введите новое имя заметки");
+                        Target.targets[focus].setName(Console.ReadLine());
+                        break;
+                    case 1:
+                        Console.WriteLine("Введите описание для заметки");
+                        Target.targets[focus].setDesc(Console.ReadLine());
+                        break;
+                    case 2:
+                        Target.targets[focus].setTargetDate(setTime());
+                        break;
+                    case 3:
+                        return;
+                }
+
+                ;
+            }
+        }
+    }
+    
+    
     static DateTime setTime()
     {
         

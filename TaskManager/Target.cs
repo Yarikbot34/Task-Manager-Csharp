@@ -11,6 +11,22 @@ public class Target
     private DateTime endDate { get; set; }
     public bool inFocus = false;
 
+    public void setName(string name)
+    {
+        if (name.Length != 0)
+        {
+            this.name = name;
+        }
+    }
+    public void setDesc(string description)
+    {
+        this.description = description;
+    }
+    public void setTargetDate(DateTime targetDate)
+    {
+        this.endDate = targetDate;
+    }
+
     public Target(string name, string description, DateTime endDate)
     {
         id = targets.Count;
@@ -51,6 +67,9 @@ public class Target
         }
         return data;
     }
+
+
+
     
     
     public static void SaveToFile()
