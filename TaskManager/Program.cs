@@ -14,6 +14,7 @@ class Program
         {
             bool targetsNotNull = Target.targets.Count > 0;
             Console.Clear();
+            while (Console.KeyAvailable) Console.ReadKey(true);
             Console.WriteLine("Текущие задачи. Для навигации используйте стрелки вверх и вниз\nРедактировать заметку R; Новая заметка N; Удалить заметку D;\nВыйти Q");
             if (targetsNotNull)
             {
@@ -33,13 +34,11 @@ class Program
             {
                 Target.targets[focusTarget].inFocus = false;
                 focusTarget--;
-                Target.targets[focusTarget].inFocus = true;
             }
             else if (ch == ConsoleKey.DownArrow && focusTarget < Target.targets.Count - 1 && targetsNotNull)
             {
                 Target.targets[focusTarget].inFocus = false;
                 focusTarget++;
-                Target.targets[focusTarget].inFocus = true;
             }
             else if (ch == ConsoleKey.N)
             {

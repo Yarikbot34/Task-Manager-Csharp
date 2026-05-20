@@ -1,15 +1,24 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 namespace TaskManager;
 
 public class Target
 {
     public static List<Target> targets = new List<Target>();
-    
+    [JsonIgnore]
     private int id { get; }
+    [JsonInclude]
     private string name { get; set; }
+    [JsonInclude]
     private string description { get; set; }
+    [JsonInclude]
     private DateTime createDate { get; set; }
+    [JsonInclude]
     private DateTime endDate { get; set; }
+    [JsonIgnore]
     public bool inFocus = false;
+    [JsonInclude]
     public bool complete = false;
 
     public void setName(string name)
@@ -38,16 +47,18 @@ public class Target
         targets.Add(this);
     }
     
-    public Target(string name, string description,DateTime createDate, DateTime endDate)
+    [JsonConstructor]
+    public Target(string name, string description,DateTime createDate, DateTime endDate, bool complete)
     {
         id = targets.Count;
         this.name = name;
         this.description = description;
         this.endDate = endDate;
         this.createDate = createDate;
+        this.complete = complete;
         targets.Add(this);
     }
-    
+
 
     override public string ToString()
     {
@@ -56,23 +67,20 @@ public class Target
         {
             return $"▓ {id} \t| {name} | {endDate} \n▓ {stat}\t| {description}\n";
         }
+
         return $"░ {id} \t| {name} | {endDate} \n░ {stat}\t| {description}\n";
     }
 
+
+
+
+
     private static string FormatData()
     {
-        string data = "";
-        foreach (Target target in targets)
-        {
-            data += target.name + "|" + target.description + "|" + 
-                    target.createDate + "|" + target.endDate +"|" + target.complete + "\n";
-        }
+        string data = JsonSerializer.Serialize<List<Target>>(Target.targets);
         return data;
     }
 
-
-
-    
     
     public static void SaveToFile()
     {
@@ -87,20 +95,8 @@ public class Target
         string path = Path.Combine(userFolder, "AppData\\Local\\data.targ");
         if (File.Exists(path))
         {
-            string[] data = File.ReadAllText(path).Split('\n');
-            foreach (string line in data)
-            {
-                try
-                {
-                    string[] lineData = line.Split('|');
-                    Target tar = new Target(lineData[0], lineData[1], DateTime.Parse(lineData[2]),
-                        DateTime.Parse(lineData[3]));
-                    if (lineData[4] == "True")
-                    {
-                        tar.complete = true;
-                    }
-                } catch (IndexOutOfRangeException) {break;}
-            }
+            string data = File.ReadAllText(path);
+            Target.targets = JsonSerializer.Deserialize<List<Target>>(data);
         }
     }
 }
