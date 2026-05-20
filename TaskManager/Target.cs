@@ -10,7 +10,7 @@ public class Target
     private DateTime createDate { get; set; }
     private DateTime endDate { get; set; }
     public bool inFocus = false;
-    public bool status = false;
+    public bool сomplete = false;
 
     public void setName(string name)
     {

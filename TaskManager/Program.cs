@@ -10,16 +10,16 @@ class Program
     {
         Target.LoadFromFile();
         int focusTarget = 0;
-        Target.targets[focusTarget].inFocus = true;
         while (true)
         {
             bool targetsNotNull = Target.targets.Count > 0;
             Console.Clear();
-            Console.WriteLine("Текущие задачи. Для навигации используйте стрелки вверх и вниз\nРедактировать заметку R; Новая заметка N; Удалить заметку D;\n Выйти Q");
+            Console.WriteLine("Текущие задачи. Для навигации используйте стрелки вверх и вниз\nРедактировать заметку R; Новая заметка N; Удалить заметку D;\nВыйти Q");
             if (targetsNotNull)
             {
                 foreach (Target t in Target.targets)
                 {
+                    Target.targets[focusTarget].inFocus = true;
                     Console.WriteLine(t.ToString());
                 }
             }
@@ -53,6 +53,18 @@ class Program
             else if (ch == ConsoleKey.R && targetsNotNull)
             {
                 editTarget(focusTarget);
+            }
+            else if (ch == ConsoleKey.Q)
+            {
+                Console.WriteLine("Сохранить изменения? (Y/N)");
+                string saveCh = Console.ReadLine().ToLower();
+                {
+                    if (saveCh.Contains("y") || saveCh.Contains("д"))
+                    {
+                        Target.SaveToFile();
+                    }
+                }
+                Environment.Exit(0);
             }
         }
     }
