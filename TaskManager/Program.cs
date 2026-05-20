@@ -66,6 +66,10 @@ class Program
                 }
                 Environment.Exit(0);
             }
+            else if (ch == ConsoleKey.Enter)
+            {
+                Target.targets[focusTarget].complete = !Target.targets[focusTarget].complete;
+            }
         }
     }
 

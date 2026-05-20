@@ -10,7 +10,7 @@ public class Target
     private DateTime createDate { get; set; }
     private DateTime endDate { get; set; }
     public bool inFocus = false;
-    public bool сomplete = false;
+    public bool complete = false;
 
     public void setName(string name)
     {
@@ -51,11 +51,12 @@ public class Target
 
     override public string ToString()
     {
+        string stat = this.complete ? "Comp" : "NComp";
         if (inFocus)
         {
-            return $"▓ {id} \t| {name} | {endDate} \n▓ \t| {description}\n";
+            return $"▓ {id} \t| {name} | {endDate} \n▓ {stat}\t| {description}\n";
         }
-        return $"░ {id} \t| {name} | {endDate} \n░ \t| {description}\n";
+        return $"░ {id} \t| {name} | {endDate} \n░ {stat}\t| {description}\n";
     }
 
     private static string FormatData()
@@ -64,7 +65,7 @@ public class Target
         foreach (Target target in targets)
         {
             data += target.name + "|" + target.description + "|" + 
-                    target.createDate + "|" + target.endDate + "\n";
+                    target.createDate + "|" + target.endDate +"|" + target.complete + "\n";
         }
         return data;
     }
@@ -94,6 +95,10 @@ public class Target
                     string[] lineData = line.Split('|');
                     Target tar = new Target(lineData[0], lineData[1], DateTime.Parse(lineData[2]),
                         DateTime.Parse(lineData[3]));
+                    if (lineData[4] == "True")
+                    {
+                        tar.complete = true;
+                    }
                 } catch (IndexOutOfRangeException) {break;}
             }
         }
